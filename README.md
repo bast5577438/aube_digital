@@ -15,6 +15,8 @@ ProdLouvat, WE Maggie, Le Nez d'Or, L'Art du Choix), mes services et mes coordon
 
 **🌐 Live →** _(à compléter une fois déployé — voir "Déployer sur Vercel" ci-dessous)_
 
+**📇 Carte de visite numérique →** `/carte/` — page mobile-first avec QR code auto-généré, bouton "Sauvegarder le contact" et liens directs (téléphone, email, LinkedIn)
+
 ---
 
 ## 🛠️ Stack technique
@@ -36,9 +38,14 @@ ProdLouvat, WE Maggie, Le Nez d'Or, L'Art du Choix), mes services et mes coordon
 ```
 aube-digital/
 ├── index.html                  # Page unique tout-en-un
+├── serve.js                    # Serveur local de développement
+├── carte/
+│   ├── index.html              # Carte de visite numérique (QR code + contact)
+│   ├── bastien-vanniere.vcf    # Fiche contact téléchargeable
+│   └── photo.jpg               # Photo de profil (à ajouter)
 ├── images/
-│   ├── logo_aube_digital.png   # Logo source (visuel de marque complet)
-│   ├── logo-mark.png           # Logo recadré, fond transparent — utilisé dans le site (favicon, nav, footer)
+│   ├── logo_aube_digital.png   # Logo source
+│   ├── logo-mark.png           # Logo transparent — nav & favicon
 │   └── bastien.jpg             # Photo — section À propos
 └── README.md
 ```

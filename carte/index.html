@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bastien Vanniere — Développeur Web Freelance</title>
+  <meta name="description" content="Développeur Web Freelance · Product Builder IA · Paris, France">
+  <meta property="og:title" content="Bastien Vanniere">
+  <meta property="og:description" content="Développeur Web Freelance · Product Builder IA · Paris, France">
+  <meta property="og:type" content="profile">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d0d0d;
+      --surface: #161616;
+      --surface-2: #1e1e1e;
+      --border: #252525;
+      --accent: #8B1A2E;
+      --accent-hover: #a31f35;
+      --text: #ffffff;
+      --text-muted: #888;
+      --text-dim: #444;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2.5rem 1.25rem;
+    }
+
+    .card { max-width: 400px; width: 100%; }
+
+    .photo-wrap { display: flex; justify-content: center; margin-bottom: 1.75rem; }
+
+    .photo {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center top;
+      border: 2.5px solid var(--accent);
+    }
+
+    .photo-placeholder {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 2.5px solid var(--accent);
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .photo-placeholder svg { width: 44px; height: 44px; stroke: #333; }
+
+    .identity { text-align: center; margin-bottom: 2rem; }
+
+    .accent-bar {
+      width: 32px;
+      height: 2px;
+      background: var(--accent);
+      margin: 0 auto 1.25rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 600;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+    }
+
+    .role {
+      font-size: 0.78rem;
+      color: var(--accent);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-top: 0.65rem;
+      line-height: 1.6;
+    }
+
+    .location {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      margin-top: 0.4rem;
+    }
+
+    .btn-save {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      width: 100%;
+      padding: 0.9rem 1.5rem;
+      background: var(--accent);
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      text-decoration: none;
+      margin-bottom: 0.75rem;
+      transition: background 0.15s;
+    }
+    .btn-save:hover { background: var(--accent-hover); }
+    .btn-save svg { width: 17px; height: 17px; flex-shrink: 0; }
+
+    .contacts { display: flex; flex-direction: column; gap: 0.55rem; }
+
+    .row {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      padding: 0.85rem 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      text-decoration: none;
+      color: var(--text);
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .row:hover { background: var(--surface-2); border-color: #333; }
+
+    .row-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: var(--surface-2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .row-icon svg { width: 18px; height: 18px; }
+
+    .row-info { flex: 1; min-width: 0; }
+    .row-main { font-size: 0.875rem; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .row-sub { font-size: 0.72rem; color: var(--text-muted); margin-top: 1px; }
+    .row-arrow { color: var(--text-dim); font-size: 1rem; }
+
+    .qr-section {
+      margin-top: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.9rem;
+    }
+
+    .qr-label {
+      font-size: 0.68rem;
+      color: var(--text-dim);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    #qr { background: #fff; padding: 10px; border-radius: 10px; display: inline-block; }
+
+    .footer {
+      text-align: center;
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      margin-top: 2rem;
+      letter-spacing: 0.05em;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+
+    <div class="photo-wrap">
+      <img class="photo" src="photo.jpg" alt="Bastien Vanniere"
+           onerror="this.style.display='none';document.getElementById('pp').style.display='flex'">
+      <div class="photo-placeholder" id="pp">
+        <svg fill="none" viewBox="0 0 24 24" stroke-width="1.2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="identity">
+      <div class="accent-bar"></div>
+      <h1>Bastien Vanniere</h1>
+      <p class="role">Développeur Web Freelance<br>Product Builder IA</p>
+      <p class="location">Paris, France</p>
+    </div>
+
+    <a href="bastien-vanniere.vcf" download class="btn-save">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m0 0 6.75-6.75M12 19.5l-6.75-6.75"/>
+      </svg>
+      Sauvegarder le contact
+    </a>
+
+    <div class="contacts">
+
+      <a href="tel:+33685321198" class="row">
+        <div class="row-icon">
+          <svg fill="none" viewBox="0 0 24 24" stroke="#8B1A2E" stroke-width="1.8">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"/>
+          </svg>
+        </div>
+        <div class="row-info">
+          <div class="row-main">06 85 32 11 98</div>
+          <div class="row-sub">Appeler</div>
+        </div>
+        <span class="row-arrow">›</span>
+      </a>
+
+      <a href="mailto:bastieb18@gmail.com" class="row">
+        <div class="row-icon">
+          <svg fill="none" viewBox="0 0 24 24" stroke="#8B1A2E" stroke-width="1.8">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"/>
+          </svg>
+        </div>
+        <div class="row-info">
+          <div class="row-main">bastieb18@gmail.com</div>
+          <div class="row-sub">Email</div>
+        </div>
+        <span class="row-arrow">›</span>
+      </a>
+
+      <a href="https://www.linkedin.com/in/bastien-vanniere-636315175/" target="_blank" rel="noopener" class="row">
+        <div class="row-icon">
+          <svg viewBox="0 0 24 24" fill="#8B1A2E">
+            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+          </svg>
+        </div>
+        <div class="row-info">
+          <div class="row-main">LinkedIn</div>
+          <div class="row-sub">Bastien Vanniere</div>
+        </div>
+        <span class="row-arrow">›</span>
+      </a>
+
+    </div>
+
+    <div class="qr-section">
+      <p class="qr-label">Partager cette carte</p>
+      <div id="qr"></div>
+    </div>
+
+    <p class="footer">aube digital &nbsp;&middot;&nbsp; Bastien Vanniere &nbsp;&middot;&nbsp; Paris 2025</p>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script>
+    new QRCode(document.getElementById('qr'), {
+      text: window.location.href,
+      width: 148,
+      height: 148,
+      colorDark: '#8B1A2E',
+      colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.M
+    });
+  </script>
+</body>
+</html>
