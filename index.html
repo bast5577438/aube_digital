@@ -1,1187 +1,337 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="aube digital — Bastien Vanniere, développeur web indépendant à Grenoble. Sites vitrines, boutiques en ligne et outils internes sur-mesure pour commerces, artisans et associations.">
-  <title>aube digital — Bastien Vanniere, développeur web indépendant</title>
-
-  <link rel="icon" href="images/logo-mark.png" type="image/png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg:        #0d1220;
-      --bg-soft:   #121a2e;
-      --surface:   #161f37;
-      --surface-2: #1c2742;
-      --border:    rgba(255,255,255,.08);
-      --border-2:  rgba(255,255,255,.14);
-      --text:      #eef1f8;
-      --text-dim:  #a4acc6;
-      --text-dimmer: #707a9c;
-
-      --c1: #ffac4d;  /* amber   */
-      --c2: #f4527e;  /* coral   */
-      --c3: #b14ff0;  /* violet  */
-      --c4: #4f8ef7;  /* azure   */
-      --c5: #2dd4e8;  /* cyan    */
-      --gradient: linear-gradient(120deg, var(--c1) 0%, var(--c2) 28%, var(--c3) 52%, var(--c4) 76%, var(--c5) 100%);
-
-      --radius: 18px;
-      --radius-sm: 12px;
-      --maxw: 1180px;
-      --shadow: 0 20px 60px -20px rgba(0,0,0,.6);
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.65;
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
-    }
-
-    h1, h2, h3, h4 {
-      font-family: 'Space Grotesk', 'Inter', sans-serif;
-      line-height: 1.15;
-      letter-spacing: -.01em;
-      font-weight: 600;
-    }
-
-    a { color: inherit; text-decoration: none; }
-    img { display: block; max-width: 100%; }
-    section { position: relative; }
-
-    .wrap {
-      max-width: var(--maxw);
-      margin: 0 auto;
-      padding: 0 24px;
-    }
-
-    .grad-text {
-      background: var(--gradient);
-      background-size: 200% 200%;
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      animation: grad-shift 10s ease infinite;
-    }
-    @keyframes grad-shift {
-      0%, 100% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 12.5px;
-      font-weight: 600;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: var(--text-dim);
-    }
-    .eyebrow::before {
-      content: '';
-      width: 7px; height: 7px;
-      border-radius: 50%;
-      background: var(--gradient);
-      box-shadow: 0 0 12px var(--c2);
-    }
-
-    /* ───────────────────────── BUTTONS ───────────────────────── */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 14px 26px;
-      border-radius: 999px;
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 600;
-      font-size: 15px;
-      letter-spacing: -.01em;
-      border: 1px solid transparent;
-      cursor: pointer;
-      transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease, background .25s ease, color .25s ease;
-      white-space: nowrap;
-    }
-    .btn-primary {
-      background: var(--gradient);
-      background-size: 180% 180%;
-      color: #0d1220;
-    }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px -8px rgba(244,82,126,.55); background-position: 100% 50%; }
-    .btn-ghost {
-      background: rgba(255,255,255,.04);
-      border-color: var(--border-2);
-      color: var(--text);
-      backdrop-filter: blur(6px);
-    }
-    .btn-ghost:hover { background: rgba(255,255,255,.09); border-color: rgba(255,255,255,.3); transform: translateY(-2px); }
-    .btn svg { width: 16px; height: 16px; flex-shrink: 0; }
-
-    /* ───────────────────────── NAV ───────────────────────── */
-    .nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      border-bottom: 1px solid transparent;
-      transition: background .3s ease, border-color .3s ease, backdrop-filter .3s ease;
-    }
-    .nav.is-scrolled {
-      background: rgba(13,18,32,.78);
-      backdrop-filter: blur(14px);
-      border-color: var(--border);
-    }
-    .nav .wrap {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 76px;
-    }
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 700;
-      font-size: 18px;
-      letter-spacing: -.01em;
-    }
-    .brand img { width: 38px; height: 38px; object-fit: contain; }
-    .brand .sub { color: var(--text-dimmer); font-weight: 500; font-size: 13px; letter-spacing: 0; display: none; }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 36px;
-    }
-    .nav-links a:not(.btn) {
-      font-size: 14.5px;
-      font-weight: 500;
-      color: var(--text-dim);
-      transition: color .2s ease;
-      position: relative;
-    }
-    .nav-links a:not(.btn)::after {
-      content: '';
-      position: absolute;
-      left: 0; right: 100%;
-      bottom: -6px;
-      height: 2px;
-      background: var(--gradient);
-      transition: right .25s ease;
-      border-radius: 2px;
-    }
-    .nav-links a:not(.btn):hover { color: var(--text); }
-    .nav-links a:not(.btn):hover::after { right: 0; }
-
-    .nav-toggle {
-      display: none;
-      width: 40px; height: 40px;
-      border-radius: 10px;
-      border: 1px solid var(--border-2);
-      background: rgba(255,255,255,.04);
-      cursor: pointer;
-      position: relative;
-    }
-    .nav-toggle span, .nav-toggle span::before, .nav-toggle span::after {
-      content: '';
-      position: absolute;
-      height: 2px;
-      background: var(--text);
-      border-radius: 2px;
-      transition: transform .25s ease, opacity .2s ease, top .25s ease;
-    }
-    .nav-toggle span { left: 10px; right: 10px; top: 19px; }
-    .nav-toggle span::before { left: 0; right: 0; top: -6px; }
-    .nav-toggle span::after { left: 0; right: 0; top: 6px; }
-    .nav-toggle.is-open span { background: transparent; }
-    .nav-toggle.is-open span::before { top: 0; transform: rotate(45deg); background: var(--text); }
-    .nav-toggle.is-open span::after { top: 0; transform: rotate(-45deg); background: var(--text); }
-
-    /* ───────────────────────── HERO ───────────────────────── */
-    .hero {
-      padding: 190px 0 120px;
-      overflow: hidden;
-    }
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: -260px; left: 50%;
-      transform: translateX(-50%);
-      width: 900px; height: 700px;
-      background:
-        radial-gradient(closest-side, rgba(244,82,126,.22), transparent),
-        radial-gradient(closest-side at 70% 60%, rgba(79,142,247,.18), transparent),
-        radial-gradient(closest-side at 30% 70%, rgba(255,172,77,.16), transparent);
-      filter: blur(40px);
-      pointer-events: none;
-      z-index: -1;
-    }
-    .hero-inner {
-      max-width: 760px;
-    }
-    .hero h1 {
-      margin-top: 22px;
-      font-size: clamp(34px, 6vw, 62px);
-      font-weight: 700;
-    }
-    .hero p.lead {
-      margin-top: 26px;
-      max-width: 600px;
-      font-size: clamp(16px, 2vw, 18.5px);
-      color: var(--text-dim);
-    }
-    .hero .actions {
-      margin-top: 40px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-    }
-    .stat-row {
-      margin-top: 64px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-    }
-    .stat-chip {
-      display: flex;
-      align-items: baseline;
-      gap: 9px;
-      padding: 13px 20px;
-      background: rgba(255,255,255,.035);
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      font-size: 13.5px;
-      color: var(--text-dim);
-    }
-    .stat-chip strong {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 19px;
-      color: var(--text);
-      font-weight: 700;
-    }
-
-    /* ───────────────────────── SECTION HEADERS ───────────────────────── */
-    .section-head {
-      max-width: 640px;
-      margin: 0 0 56px;
-    }
-    .section-head h2 {
-      margin-top: 16px;
-      font-size: clamp(28px, 4.4vw, 42px);
-    }
-    .section-head p {
-      margin-top: 18px;
-      color: var(--text-dim);
-      font-size: 16.5px;
-    }
-    .section-pad { padding: 120px 0; }
-
-    /* ───────────────────────── REVEAL ───────────────────────── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(28px);
-      transition: opacity .7s cubic-bezier(.21,.6,.35,1), transform .7s cubic-bezier(.21,.6,.35,1);
-    }
-    .reveal.is-visible { opacity: 1; transform: translateY(0); }
-    .reveal-stagger.is-visible > * { opacity: 1; transform: translateY(0); }
-    .reveal-stagger > * {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity .6s ease, transform .6s ease;
-    }
-    .reveal-stagger > *:nth-child(1) { transition-delay: .02s; }
-    .reveal-stagger > *:nth-child(2) { transition-delay: .09s; }
-    .reveal-stagger > *:nth-child(3) { transition-delay: .16s; }
-    .reveal-stagger > *:nth-child(4) { transition-delay: .23s; }
-    .reveal-stagger > *:nth-child(5) { transition-delay: .30s; }
-    .reveal-stagger > *:nth-child(6) { transition-delay: .37s; }
-
-    /* ───────────────────────── PROJECTS ───────────────────────── */
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 22px;
-    }
-    .project-card {
-      grid-column: span 1;
-      background: linear-gradient(180deg, var(--surface), var(--bg-soft));
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 32px;
-      display: flex;
-      flex-direction: column;
-      transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease;
-    }
-    .project-card:hover {
-      transform: translateY(-4px);
-      border-color: var(--border-2);
-      box-shadow: var(--shadow);
-    }
-    .card-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-    .card-tag {
-      font-size: 11.5px;
-      font-weight: 600;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      color: var(--text-dimmer);
-      padding: 7px 13px;
-      border: 1px solid var(--border-2);
-      border-radius: 999px;
-    }
-    .project-card h3 {
-      font-size: 23px;
-      margin-bottom: 4px;
-    }
-    .project-card .project-meta {
-      font-size: 13.5px;
-      color: var(--text-dimmer);
-      margin-bottom: 16px;
-    }
-    .project-card p.desc {
-      color: var(--text-dim);
-      font-size: 15px;
-      flex: 1;
-    }
-    .tag-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin: 22px 0 22px;
-    }
-    .tech-pill {
-      font-size: 12px;
-      font-weight: 500;
-      padding: 6px 12px;
-      border-radius: 8px;
-      background: rgba(255,255,255,.045);
-      border: 1px solid var(--border);
-      color: var(--text-dim);
-    }
-    .card-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: auto;
-    }
-    .card-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      font-size: 14px;
-      font-weight: 600;
-      font-family: 'Space Grotesk', sans-serif;
-      padding: 11px 18px;
-      border-radius: 999px;
-      border: 1px solid var(--border-2);
-      color: var(--text);
-      transition: border-color .2s ease, background .2s ease, transform .2s ease;
-    }
-    .card-link:hover { background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.35); transform: translateY(-1px); }
-    .card-link.is-muted {
-      color: var(--text-dimmer);
-      border-style: dashed;
-      cursor: default;
-    }
-    .card-link.is-muted:hover { transform: none; background: transparent; border-color: var(--border-2); }
-    .card-link svg { width: 14px; height: 14px; }
-
-    /* ── Projet principal ── */
-    .project-card.is-featured {
-      grid-column: span 2;
-      display: grid;
-      grid-template-columns: 1.05fr 1fr;
-      gap: 36px;
-      padding: 36px;
-    }
-    .featured-content { display: flex; flex-direction: column; }
-    .card-tag.is-live {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      color: #7be8a8;
-      border-color: rgba(123,232,168,.3);
-    }
-    .card-tag.is-live::before {
-      content: '';
-      width: 7px; height: 7px;
-      border-radius: 50%;
-      background: #7be8a8;
-      box-shadow: 0 0 0 0 rgba(123,232,168,.45);
-      animation: pulse-live 2.2s infinite;
-    }
-    @keyframes pulse-live {
-      0% { box-shadow: 0 0 0 0 rgba(123,232,168,.45); }
-      70% { box-shadow: 0 0 0 7px rgba(123,232,168,0); }
-      100% { box-shadow: 0 0 0 0 rgba(123,232,168,0); }
-    }
-    .card-link.is-primary {
-      background: var(--gradient);
-      background-size: 180% 180%;
-      color: #0d1220;
-      border-color: transparent;
-    }
-    .card-link.is-primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 12px 32px -8px rgba(244,82,126,.45);
-      background-position: 100% 50%;
-    }
-
-    /* ── Visuel mockup du site Louvat Box ── */
-    .featured-visual {
-      border-radius: 14px;
-      overflow: hidden;
-      border: 1px solid var(--border-2);
-      display: flex;
-      flex-direction: column;
-      min-height: 360px;
-      box-shadow: var(--shadow);
-    }
-    .browser-chrome {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      padding: 12px 16px;
-      background: #232b27;
-      border-bottom: 1px solid rgba(255,255,255,.06);
-    }
-    .browser-chrome .dot { width: 9px; height: 9px; border-radius: 50%; background: rgba(255,255,255,.16); }
-    .browser-chrome .url {
-      margin-left: 10px;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 12px;
-      color: rgba(255,255,255,.4);
-      background: rgba(255,255,255,.05);
-      border-radius: 999px;
-      padding: 4px 16px;
-    }
-    .lv-mock {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      background:
-        radial-gradient(circle at 80% 15%, rgba(240,145,155,.16), transparent 45%),
-        linear-gradient(165deg, #4a4038 0%, #312a25 55%, #221d1a 100%);
-      color: #f6efe5;
-    }
-    .lv-mock-nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 16px 26px;
-      background: rgba(60,72,64,.92);
-      border-bottom: 1px solid rgba(255,255,255,.06);
-    }
-    .lv-mock-logo {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3px;
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 700;
-      font-size: 14px;
-      letter-spacing: .14em;
-    }
-    .lv-mock-logo small {
-      font-size: 8px;
-      font-weight: 500;
-      letter-spacing: .3em;
-      color: rgba(246,239,229,.45);
-    }
-    .lv-mock-cta {
-      font-size: 12px;
-      font-weight: 600;
-      padding: 8px 16px;
-      border-radius: 999px;
-      background: #f0919b;
-      color: #2e2722;
-    }
-    .lv-mock-hero {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 16px;
-      padding: 30px 32px;
-    }
-    .lv-mock-badge {
-      align-self: flex-start;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      padding: 6px 14px;
-      border-radius: 999px;
-      background: #f0919b;
-      color: #2e2722;
-    }
-    .lv-mock-hero h4 {
-      font-size: 27px;
-      line-height: 1.28;
-      font-weight: 700;
-      max-width: 300px;
-    }
-    .lv-mock-hero h4 em { font-style: normal; color: #f0919b; }
-    .lv-mock-stats { display: flex; gap: 22px; flex-wrap: wrap; margin-top: 6px; }
-    .lv-mock-stats strong { display: block; font-size: 19px; font-weight: 700; color: #f6efe5; }
-    .lv-mock-stats span { font-size: 11.5px; color: rgba(246,239,229,.5); }
-
-    /* ───────────────────────── SERVICES ───────────────────────── */
-    .services-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-    }
-    .service-card {
-      padding: 30px 26px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      background: rgba(255,255,255,.025);
-      transition: transform .3s ease, border-color .3s ease, background .3s ease;
-    }
-    .service-card:hover {
-      transform: translateY(-4px);
-      border-color: var(--border-2);
-      background: rgba(255,255,255,.045);
-    }
-    .service-icon {
-      width: 46px; height: 46px;
-      border-radius: 13px;
-      display: flex; align-items: center; justify-content: center;
-      background: var(--gradient);
-      margin-bottom: 22px;
-    }
-    .service-icon svg { width: 22px; height: 22px; color: #161025; }
-    .service-card h3 { font-size: 18px; margin-bottom: 10px; }
-    .service-card p { font-size: 14.5px; color: var(--text-dim); }
-
-    /* ───────────────────────── ABOUT ───────────────────────── */
-    .about-grid {
-      display: grid;
-      grid-template-columns: 320px 1fr;
-      gap: 64px;
-      align-items: center;
-    }
-    .about-photo {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 1;
-      border-radius: 28px;
-      isolation: isolate;
-      border: 1px solid var(--border-2);
-    }
-    .about-photo img {
-      display: block;
-      width: 100%; height: 100%;
-      object-fit: cover;
-      filter: saturate(1.04);
-      border-radius: 28px;
-    }
-    .about-photo::after {
-      content: '';
-      position: absolute; inset: 0;
-      border-radius: 28px;
-      background: linear-gradient(200deg, rgba(177,79,240,.16), transparent 45%, rgba(45,212,232,.14));
-      mix-blend-mode: overlay;
-    }
-    .about-photo .ring {
-      position: absolute;
-      inset: -14px;
-      border-radius: 38px;
-      background: var(--gradient);
-      opacity: .5;
-      z-index: -1;
-      filter: blur(22px);
-    }
-    .about-copy h2 { font-size: clamp(28px, 4.4vw, 40px); margin: 16px 0 22px; }
-    .about-copy p { color: var(--text-dim); font-size: 16px; margin-bottom: 16px; max-width: 580px; }
-    .about-copy p strong { color: var(--text); font-weight: 600; }
-    .about-list {
-      margin-top: 28px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-    .about-list li {
-      display: flex;
-      gap: 14px;
-      align-items: flex-start;
-      list-style: none;
-      font-size: 15px;
-      color: var(--text-dim);
-    }
-    .about-list li::before {
-      content: '';
-      flex-shrink: 0;
-      margin-top: 7px;
-      width: 9px; height: 9px;
-      border-radius: 3px;
-      background: var(--gradient);
-    }
-    .about-list li strong { color: var(--text); font-weight: 600; }
-
-    /* ───────────────────────── CONTACT ───────────────────────── */
-    .contact-card {
-      border-radius: 28px;
-      border: 1px solid var(--border-2);
-      background:
-        radial-gradient(circle at 18% 22%, rgba(255,172,77,.14), transparent 42%),
-        radial-gradient(circle at 85% 78%, rgba(45,212,232,.14), transparent 42%),
-        linear-gradient(180deg, var(--surface), var(--bg-soft));
-      padding: clamp(36px, 6vw, 76px);
-      text-align: center;
-    }
-    .contact-card .eyebrow { justify-content: center; }
-    .contact-card h2 {
-      margin-top: 18px;
-      font-size: clamp(30px, 5.4vw, 50px);
-      max-width: 720px;
-      margin-left: auto; margin-right: auto;
-    }
-    .contact-card p.lead {
-      margin: 22px auto 0;
-      max-width: 540px;
-      color: var(--text-dim);
-      font-size: 16.5px;
-    }
-    .contact-actions {
-      margin-top: 38px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 14px;
-    }
-    .social-row {
-      margin-top: 46px;
-      display: flex;
-      justify-content: center;
-      gap: 14px;
-    }
-    .social-link {
-      width: 46px; height: 46px;
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      border: 1px solid var(--border-2);
-      background: rgba(255,255,255,.03);
-      color: var(--text-dim);
-      transition: color .2s ease, border-color .2s ease, transform .2s ease, background .2s ease;
-    }
-    .social-link:hover {
-      color: var(--text);
-      border-color: rgba(255,255,255,.35);
-      background: rgba(255,255,255,.08);
-      transform: translateY(-3px);
-    }
-    .social-link svg { width: 19px; height: 19px; }
-
-    /* ───────────────────────── FOOTER ───────────────────────── */
-    footer {
-      padding: 44px 0 50px;
-      border-top: 1px solid var(--border);
-    }
-    footer .wrap {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-    }
-    .footer-brand {
-      display: flex; align-items: center; gap: 10px;
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 600;
-      font-size: 14.5px;
-      color: var(--text-dim);
-    }
-    .footer-brand img { width: 27px; height: 27px; object-fit: contain; }
-    footer .legal { font-size: 13px; color: var(--text-dimmer); }
-    footer .legal a { color: var(--text-dim); }
-    footer .legal a:hover { color: var(--text); }
-
-    /* ───────────────────────── RESPONSIVE ───────────────────────── */
-    @media (max-width: 980px) {
-      .about-grid { grid-template-columns: 1fr; gap: 40px; }
-      .about-photo { max-width: 340px; margin: 0 auto; }
-      .services-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-
-    @media (max-width: 760px) {
-      .nav-links {
-        position: fixed;
-        top: 76px; left: 0; right: 0;
-        flex-direction: column;
-        align-items: stretch;
-        gap: 0;
-        background: rgba(13,18,32,.97);
-        backdrop-filter: blur(16px);
-        border-bottom: 1px solid var(--border);
-        padding: 8px 24px 22px;
-        transform: translateY(-130%);
-        opacity: 0;
-        transition: transform .3s ease, opacity .25s ease;
-      }
-      .nav-links.is-open { transform: translateY(0); opacity: 1; }
-      .nav-links a:not(.btn) { padding: 14px 4px; border-bottom: 1px solid var(--border); }
-      .nav-links a:not(.btn)::after { display: none; }
-      .nav-links .btn { margin-top: 14px; align-self: flex-start; }
-      .nav-toggle { display: block; }
-      .brand .sub { display: none !important; }
-
-      .hero { padding: 150px 0 80px; }
-      .section-pad { padding: 84px 0; }
-      .projects-grid { grid-template-columns: 1fr; }
-      .project-card.is-featured { grid-column: span 1; grid-template-columns: 1fr; gap: 24px; padding: 26px; }
-      .featured-visual { min-height: 280px; order: -1; }
-      .services-grid { grid-template-columns: 1fr; }
-      .stat-row { gap: 10px; }
-      .stat-chip { padding: 11px 16px; }
-    }
-
-    @media (min-width: 761px) {
-      .brand .sub { display: inline; }
-      .brand .sub::before { content: '·'; margin: 0 10px; color: var(--border-2); }
-    }
-
-    /* Reduced motion */
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      .grad-text, .reveal, .reveal-stagger > * { animation: none !important; transition: none !important; opacity: 1 !important; transform: none !important; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>aube digital — Bastien Vannière, développeur web indépendant</title>
+<meta name="description" content="aube digital — Bastien Vannière, développeur web indépendant à Grenoble et en Ardèche. Sites vitrines, boutiques en ligne et outils internes sur-mesure.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=4">
 </head>
 <body>
 
-  <noscript><style>.reveal, .reveal-stagger > * { opacity: 1 !important; transform: none !important; }</style></noscript>
+<!-- NAV -->
+<header class="nav">
+  <button class="lang-switch" id="langSwitch" aria-label="Changer de langue">
+    <span class="lang-fr is-active">FR</span><span class="lang-sep">|</span><span class="lang-en">EN</span>
+  </button>
+  <a href="#top" class="nav-logo">aube digital<span class="dot">.</span></a>
+  <nav class="nav-links">
+    <a href="#realisations"><span class="lang-fr">Réalisations</span><span class="lang-en" hidden>Work</span></a>
+    <a href="#services"><span class="lang-fr">Services</span><span class="lang-en" hidden>Services</span></a>
+    <a href="#apropos"><span class="lang-fr">À propos</span><span class="lang-en" hidden>About</span></a>
+    <a href="#contact" class="nav-cta"><span class="lang-fr">Discutons</span><span class="lang-en" hidden>Let's talk</span> →</a>
+  </nav>
+  <button class="nav-burger" id="navBurger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</header>
 
-  <!-- ============== NAV ============== -->
-  <header class="nav" id="site-nav">
-    <div class="wrap">
-      <a href="#top" class="brand">
-        <img src="images/logo-mark.png" alt="Logo aube digital">
-        aube digital <span class="sub">Bastien Vannière</span>
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <p class="eyebrow reveal">
+      <span class="lang-fr">Développeur web indépendant — Grenoble &amp; Ardèche</span>
+      <span class="lang-en" hidden>Independent web developer — Grenoble &amp; Ardèche, France</span>
+    </p>
+    <h1 class="hero-title">
+      <span class="reveal-line"><span class="lang-fr">DES SITES</span><span class="lang-en" hidden>WEBSITES</span></span>
+      <span class="reveal-line"><span class="lang-fr">QUI TOURNENT.</span><span class="lang-en" hidden>THAT WORK.</span></span>
+      <span class="reveal-line accent"><span class="lang-fr">VRAIMENT.</span><span class="lang-en" hidden>FOR REAL.</span></span>
+    </h1>
+    <p class="hero-sub reveal">
+      <span class="lang-fr">Sites vitrines, boutiques en ligne et outils internes sur-mesure pour les commerces, artisans et associations qui veulent un site <strong>utile</strong> — pas une usine à gaz.</span>
+      <span class="lang-en" hidden>Showcase websites, online stores and custom internal tools for shops, craftspeople and associations who want a site that's <strong>useful</strong> — not an over-engineered mess.</span>
+    </p>
+    <p class="hero-diversity reveal">
+      <span class="lang-fr">Sites vitrines · E-commerce &amp; abonnements · Outils internes · Apps collaboratives · Automatisation IA</span>
+      <span class="lang-en" hidden>Showcase sites · E-commerce &amp; subscriptions · Internal tools · Collaborative apps · AI automation</span>
+    </p>
+    <div class="hero-actions reveal">
+      <a href="#realisations" class="btn btn-ghost">
+        <span class="lang-fr">Voir mes réalisations</span><span class="lang-en" hidden>See my work</span>
       </a>
-
-      <nav class="nav-links" id="nav-links">
-        <a href="#realisations">Réalisations</a>
-        <a href="#services">Services</a>
-        <a href="#a-propos">À propos</a>
-        <a href="#contact">Contact</a>
-        <a href="mailto:bastieb18@gmail.com" class="btn btn-primary">Me contacter</a>
-      </nav>
-
-      <button class="nav-toggle" id="nav-toggle" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav-links">
-        <span></span>
-      </button>
-    </div>
-  </header>
-
-  <main id="top">
-
-    <!-- ============== HERO ============== -->
-    <section class="hero">
-      <div class="wrap">
-        <div class="hero-inner reveal">
-          <span class="eyebrow">aube digital · développeur web indépendant à Grenoble</span>
-          <h1>Des sites et des outils <span class="grad-text">qui tournent pour de vrai</span> — pas des maquettes.</h1>
-          <p class="lead">
-            Je m'appelle Bastien. Je conçois des sites vitrines, boutiques en ligne et outils internes
-            sur-mesure pour les commerces, artisans et associations qui veulent un site <strong style="color:var(--text)">utile</strong> —
-            pas une usine à gaz qu'on ne comprend plus six mois après.
-          </p>
-          <div class="actions">
-            <a href="#realisations" class="btn btn-primary">
-              Voir mes réalisations
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
-            </a>
-            <a href="#contact" class="btn btn-ghost">
-              Discuter de mon projet
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            </a>
-          </div>
-
-          <div class="stat-row">
-            <span class="stat-chip"><strong>6</strong> sites &amp; outils livrés</span>
-            <span class="stat-chip"><strong>3</strong> secteurs : food, commerce, associatif</span>
-            <span class="stat-chip"><strong>100%</strong> sur-mesure, zéro template</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============== PROJETS ============== -->
-    <section class="section-pad" id="realisations">
-      <div class="wrap">
-        <div class="section-head reveal">
-          <span class="eyebrow">Réalisations</span>
-          <h2>Du concret, livré à de vraies structures.</h2>
-          <p>Chaque projet ci-dessous tourne — ou a tourné — pour une structure réelle : un restaurant, une biscuiterie artisanale, une association. Pas de maquettes Dribbble : des outils que des gens utilisent vraiment, au quotidien.</p>
-        </div>
-
-        <div class="projects-grid reveal-stagger">
-
-          <!-- Louvat Box — projet principal -->
-          <article class="project-card is-featured">
-            <div class="featured-content">
-              <div class="card-top">
-                <span class="card-tag">Plateforme e-commerce · Agroalimentaire</span>
-                <span class="card-tag is-live">En ligne</span>
-              </div>
-              <h3>Louvat Box</h3>
-              <p class="project-meta">Biscuiterie Louvat — Saint-Geoire-en-Valdaine (Isère), depuis 1954</p>
-              <p class="desc">
-                Le projet le plus complet livré à ce jour : une plateforme d'abonnement à des box de biscuits
-                artisanaux, déployée et en ligne pour une biscuiterie familiale. Tunnel d'abonnement avec choix
-                de formule, fréquence et paiement par prélèvement SEPA, gestion des codes Comité d'Entreprise
-                avec remises automatiques, espace client « Mon compte » avec authentification, et back-office
-                complet pour la gérante (abonnés, codes CE, suivi des commandes, e-mails transactionnels
-                automatisés). Pages légales conformes RGPD (mentions légales, CGV, politique de confidentialité).
-              </p>
-              <div class="tag-row">
-                <span class="tech-pill">Next.js</span>
-                <span class="tech-pill">React</span>
-                <span class="tech-pill">TypeScript</span>
-                <span class="tech-pill">Tailwind CSS</span>
-                <span class="tech-pill">Supabase</span>
-                <span class="tech-pill">Stripe</span>
-              </div>
-              <div class="card-links">
-                <a class="card-link is-primary" href="https://louvat-box.vercel.app" target="_blank" rel="noopener">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>
-                  Voir le site en ligne
-                </a>
-                <a class="card-link" href="https://github.com/bast5577438/Louvat-box" target="_blank" rel="noopener">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.4 7.86 10.93.57.1.78-.25.78-.55 0-.27-.01-1.16-.02-2.11-3.2.7-3.88-1.36-3.88-1.36-.52-1.34-1.28-1.69-1.28-1.69-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.74.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.14 0 1.55-.01 2.79-.01 3.17 0 .31.2.66.79.55A10.97 10.97 0 0 0 23.5 12c0-6.35-5.15-11.5-11.5-11.5z"/></svg>
-                  Code source
-                </a>
-              </div>
-            </div>
-
-            <div class="featured-visual">
-              <div class="browser-chrome">
-                <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-                <span class="url">louvat-box.vercel.app</span>
-              </div>
-              <div class="lv-mock">
-                <div class="lv-mock-nav">
-                  <span class="lv-mock-logo">LOUVAT<small>Biscuiterie 1954</small></span>
-                  <span class="lv-mock-cta">Je m'abonne</span>
-                </div>
-                <div class="lv-mock-hero">
-                  <span class="lv-mock-badge">Biscuits artisanaux</span>
-                  <h4>Votre box de <em>biscuits Louvat</em> chaque mois</h4>
-                  <div class="lv-mock-stats">
-                    <span><strong>12+</strong>variétés</span>
-                    <span><strong>400+</strong>abonnés</span>
-                    <span><strong>1954</strong>depuis</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </article>
-
-          <!-- Mamie Paillette -->
-          <article class="project-card">
-            <div class="card-top">
-              <span class="card-tag">Site vitrine · Restauration</span>
-            </div>
-            <h3>Mamie Paillette</h3>
-            <p class="project-meta">Restaurant familial — Jaujac, Ardèche</p>
-            <p class="desc">
-              Site vitrine complet pensé pour donner envie de pousser la porte : slider d'accueil animé,
-              carte interactive par onglets, mise en avant des producteurs locaux et de l'histoire du lieu.
-              Un seul fichier HTML, zéro framework, zéro dépendance — et un temps de chargement quasi instantané.
-            </p>
-            <div class="tag-row">
-              <span class="tech-pill">HTML5 / CSS3</span>
-              <span class="tech-pill">JavaScript vanilla</span>
-              <span class="tech-pill">Vercel</span>
-              <span class="tech-pill">RGPD ready</span>
-            </div>
-            <div class="card-links">
-              <a class="card-link" href="https://github.com/bast5577438/mamiepailette" target="_blank" rel="noopener">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.4 7.86 10.93.57.1.78-.25.78-.55 0-.27-.01-1.16-.02-2.11-3.2.7-3.88-1.36-3.88-1.36-.52-1.34-1.28-1.69-1.28-1.69-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.74.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.14 0 1.55-.01 2.79-.01 3.17 0 .31.2.66.79.55A10.97 10.97 0 0 0 23.5 12c0-6.35-5.15-11.5-11.5-11.5z"/></svg>
-                Code source
-              </a>
-            </div>
-          </article>
-
-          <!-- ProdLouvat -->
-          <article class="project-card">
-            <div class="card-top">
-              <span class="card-tag">Outil interne · Production</span>
-            </div>
-            <h3>ProdLouvat</h3>
-            <p class="project-meta">Biscuiterie Louvat — suivi de production en temps réel</p>
-            <p class="desc">
-              Outil interne pour suivre le chiffre d'affaires journalier en production : saisie rapide,
-              historique consultable, objectifs personnalisés par palier. Synchronisé en temps réel sur
-              tous les postes — et ça continue de fonctionner même sans connexion.
-            </p>
-            <div class="tag-row">
-              <span class="tech-pill">JavaScript</span>
-              <span class="tech-pill">Firebase Realtime DB</span>
-              <span class="tech-pill">Mode hors-ligne</span>
-            </div>
-            <div class="card-links">
-              <a class="card-link" href="https://github.com/bast5577438/ProdLouvat" target="_blank" rel="noopener">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.4 7.86 10.93.57.1.78-.25.78-.55 0-.27-.01-1.16-.02-2.11-3.2.7-3.88-1.36-3.88-1.36-.52-1.34-1.28-1.69-1.28-1.69-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.74.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.14 0 1.55-.01 2.79-.01 3.17 0 .31.2.66.79.55A10.97 10.97 0 0 0 23.5 12c0-6.35-5.15-11.5-11.5-11.5z"/></svg>
-                Code source
-              </a>
-            </div>
-          </article>
-
-          <!-- WE Maggie -->
-          <article class="project-card">
-            <div class="card-top">
-              <span class="card-tag">App collaborative · Événementiel</span>
-            </div>
-            <h3>WE Maggie</h3>
-            <p class="project-meta">Organisation d'un week-end entre amies, à 12</p>
-            <p class="desc">
-              Application mono-page pour organiser un week-end d'anniversaire à plusieurs : programme,
-              fiches participantes, suivi des finances, répartition du ménage, checklist de bagages —
-              tout synchronisé en direct entre les téléphones de chacune.
-            </p>
-            <div class="tag-row">
-              <span class="tech-pill">JavaScript</span>
-              <span class="tech-pill">Firebase Realtime DB</span>
-              <span class="tech-pill">Responsive</span>
-            </div>
-            <div class="card-links">
-              <a class="card-link" href="https://github.com/bast5577438/WEMaggie" target="_blank" rel="noopener">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.4 7.86 10.93.57.1.78-.25.78-.55 0-.27-.01-1.16-.02-2.11-3.2.7-3.88-1.36-3.88-1.36-.52-1.34-1.28-1.69-1.28-1.69-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.74.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.14 0 1.55-.01 2.79-.01 3.17 0 .31.2.66.79.55A10.97 10.97 0 0 0 23.5 12c0-6.35-5.15-11.5-11.5-11.5z"/></svg>
-                Code source
-              </a>
-            </div>
-          </article>
-
-          <!-- Le Nez d'Or -->
-          <article class="project-card">
-            <div class="card-top">
-              <span class="card-tag">Site événementiel</span>
-            </div>
-            <h3>Le Nez d'Or</h3>
-            <p class="project-meta">Cérémonie de remise de prix</p>
-            <p class="desc">
-              Site dédié à une cérémonie de remise de prix, pensé comme une vraie mise en scène :
-              identité forte, narration soignée, expérience qui donne envie de suivre l'événement
-              jusqu'au bout.
-            </p>
-            <div class="tag-row">
-              <span class="tech-pill">HTML5 / CSS3</span>
-              <span class="tech-pill">JavaScript vanilla</span>
-            </div>
-            <div class="card-links">
-              <a class="card-link" href="https://github.com/bast5577438/LeNezDor" target="_blank" rel="noopener">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.4 7.86 10.93.57.1.78-.25.78-.55 0-.27-.01-1.16-.02-2.11-3.2.7-3.88-1.36-3.88-1.36-.52-1.34-1.28-1.69-1.28-1.69-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.74.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.14 0 1.55-.01 2.79-.01 3.17 0 .31.2.66.79.55A10.97 10.97 0 0 0 23.5 12c0-6.35-5.15-11.5-11.5-11.5z"/></svg>
-                Code source
-              </a>
-            </div>
-          </article>
-
-          <!-- L'Art du Choix -->
-          <article class="project-card">
-            <div class="card-top">
-              <span class="card-tag">Site associatif · Recyclerie</span>
-            </div>
-            <h3>L'Art du Choix</h3>
-            <p class="project-meta">Recyclerie associative — Lalevade-d'Ardèche</p>
-            <p class="desc">
-              Vitrine pour une recyclerie associative : donner envie de pousser la porte, présenter les
-              valeurs et les horaires, et faire rayonner une démarche de consommation responsable
-              avec un site aussi engagé que l'association elle-même.
-            </p>
-            <div class="tag-row">
-              <span class="tech-pill">HTML5 / CSS3</span>
-              <span class="tech-pill">JavaScript vanilla</span>
-              <span class="tech-pill">Accessibilité</span>
-            </div>
-            <div class="card-links">
-              <span class="card-link is-muted">Projet livré · démo sur demande</span>
-            </div>
-          </article>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- ============== SERVICES ============== -->
-    <section class="section-pad" id="services" style="background:linear-gradient(180deg, transparent, rgba(255,255,255,.015) 12%, rgba(255,255,255,.015) 88%, transparent);">
-      <div class="wrap">
-        <div class="section-head reveal">
-          <span class="eyebrow">Ce que je peux faire pour vous</span>
-          <h2>Quatre façons de faire avancer votre activité.</h2>
-          <p>Pas de catalogue figé : je pars de votre besoin réel — qui n'est pas toujours celui auquel on pense au départ — pour proposer la solution la plus simple qui fonctionne vraiment.</p>
-        </div>
-
-        <div class="services-grid reveal-stagger">
-          <div class="service-card">
-            <div class="service-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2.5"/><path d="M3 9h18M8 21h8M12 18v3"/></svg>
-            </div>
-            <h3>Sites vitrines</h3>
-            <p>Présentez votre commerce, votre activité ou votre association avec un site qui vous ressemble vraiment — rapide, soigné sur mobile, et que vous pouvez transmettre sans soucis.</p>
-          </div>
-          <div class="service-card">
-            <div class="service-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h2l2.4 12.2a2 2 0 0 0 2 1.6h8.6a2 2 0 0 0 2-1.6L21 7H6"/></svg>
-            </div>
-            <h3>Boutiques &amp; abonnements</h3>
-            <p>Vendez en ligne : panier, formules d'abonnement, paiement. Une base technique solide (Next.js / React) pensée pour grandir avec votre activité, pas pour la freiner.</p>
-          </div>
-          <div class="service-card">
-            <div class="service-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V8a2 2 0 0 1 2-2h2.5L11 3h2l2.5 3H18a2 2 0 0 1 2 2v11"/><path d="M4 19h16M9 19v-5h6v5"/></svg>
-            </div>
-            <h3>Outils internes sur-mesure</h3>
-            <p>Suivi de production, gestion de stock, tableaux de bord : des outils pensés pour votre métier, accessibles depuis n'importe quel poste, et synchronisés en temps réel.</p>
-          </div>
-          <div class="service-card">
-            <div class="service-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 1.9"/></svg>
-            </div>
-            <h3>Apps collaboratives</h3>
-            <p>Organisation d'événements, coordination d'équipe : des interfaces simples où tout le monde voit la même chose, en direct — y compris quand la connexion fait des siennes.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============== À PROPOS ============== -->
-    <section class="section-pad" id="a-propos">
-      <div class="wrap">
-        <div class="about-grid">
-          <div class="about-photo reveal">
-            <div class="ring" aria-hidden="true"></div>
-            <img src="images/bastien.jpg" alt="Portrait de Bastien Vannière, fondateur d'aube digital" loading="lazy">
-          </div>
-          <div class="about-copy reveal">
-            <span class="eyebrow">À propos</span>
-            <h2>Bastien — autodidacte, et ça se voit dans le code.</h2>
-            <p>
-              J'ai appris à coder en construisant de <strong>vrais projets pour de vraies structures</strong> —
-              une biscuiterie artisanale, un restaurant familial, une association — pas en empilant des tutoriels.
-              Résultat : des outils que des équipes utilisent chaque jour pour vendre, produire ou s'organiser,
-              pas des maquettes qui dorment dans un coin.
-            </p>
-            <p>
-              Ma façon de travailler est simple : <strong>comprendre le vrai besoin</strong> (souvent un peu différent
-              de la demande de départ), proposer la solution la plus simple qui tient la route, et livrer du code
-              que vous pourrez faire évoluer — sans dépendre de moi à vie.
-            </p>
-            <ul class="about-list">
-              <li><strong>Du code léger :</strong> pas de framework par défaut quand un site mono-fichier suffit — juste des pages qui chargent vite, partout.</li>
-              <li><strong>Du concret :</strong> e-commerce, ERP, suivi de production, synchronisation temps réel — je code aussi ce qui tourne en coulisses.</li>
-              <li><strong>De la proximité :</strong> basé à Grenoble, disponible pour discuter, tester, ajuster — jusqu'à ce que ça vous convienne vraiment.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============== CONTACT ============== -->
-    <section class="section-pad" id="contact">
-      <div class="wrap">
-        <div class="contact-card reveal">
-          <span class="eyebrow">Contact</span>
-          <h2>Une idée de site ou d'outil en tête ? <span class="grad-text">Discutons-en.</span></h2>
-          <p class="lead">Décrivez-moi votre projet — même flou, même "c'est juste une idée pour l'instant".
-            Je réponds rapidement, sans jargon, et sans engagement.</p>
-          <div class="contact-actions">
-            <a href="mailto:bastieb18@gmail.com" class="btn btn-primary">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3.5 7.2 12 13l8.5-5.8"/></svg>
-              bastieb18@gmail.com
-            </a>
-            <a href="https://www.linkedin.com/in/bastien-vanniere-636315175/" target="_blank" rel="noopener" class="btn btn-ghost">
-              Me contacter sur LinkedIn
-            </a>
-          </div>
-
-          <div class="social-row">
-            <a class="social-link" href="https://github.com/bast5577438" target="_blank" rel="noopener" aria-label="GitHub de Bastien Vannière (bast5577438)">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.4 7.86 10.93.57.1.78-.25.78-.55 0-.27-.01-1.16-.02-2.11-3.2.7-3.88-1.36-3.88-1.36-.52-1.34-1.28-1.69-1.28-1.69-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.74.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.14 0 1.55-.01 2.79-.01 3.17 0 .31.2.66.79.55A10.97 10.97 0 0 0 23.5 12c0-6.35-5.15-11.5-11.5-11.5z"/></svg>
-            </a>
-            <a class="social-link" href="https://www.instagram.com/aube_digital/" target="_blank" rel="noopener" aria-label="Instagram aube_digital">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1.15" fill="currentColor" stroke="none"/></svg>
-            </a>
-            <a class="social-link" href="https://www.linkedin.com/in/bastien-vanniere-636315175/" target="_blank" rel="noopener" aria-label="LinkedIn de Bastien Vannière">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5.34 3.5a2 2 0 1 1 0 4 2 2 0 0 1 0-4zM3.6 9h3.5v11.5H3.6V9zM10 9h3.36v1.57h.05c.47-.88 1.6-1.8 3.3-1.8 3.53 0 4.18 2.32 4.18 5.34v6.4H17.5v-5.67c0-1.35-.02-3.1-1.89-3.1-1.89 0-2.18 1.47-2.18 3v5.77H10V9z"/></svg>
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- ============== FOOTER ============== -->
-  <footer>
-    <div class="wrap">
-      <a href="#top" class="footer-brand">
-        <img src="images/logo-mark.png" alt="">
-        aube digital
+      <a href="#contact" class="btn btn-solid">
+        <span class="lang-fr">Démarrer un projet</span><span class="lang-en" hidden>Start a project</span> →
       </a>
-      <p class="legal">© <span id="year"></span> aube digital — Bastien Vannière · <a href="mailto:bastieb18@gmail.com">bastieb18@gmail.com</a></p>
     </div>
-  </footer>
+    <div class="hero-stats reveal">
+      <div><strong>9</strong><span><span class="lang-fr">sites &amp; outils livrés</span><span class="lang-en" hidden>sites &amp; tools shipped</span></span></div>
+      <div><strong>3</strong><span><span class="lang-fr">secteurs accompagnés</span><span class="lang-en" hidden>sectors served</span></span></div>
+      <div><strong>100%</strong><span><span class="lang-fr">sur-mesure</span><span class="lang-en" hidden>custom-built</span></span></div>
+    </div>
+  </section>
 
-  <script>
-    // Année dynamique
-    document.getElementById('year').textContent = new Date().getFullYear();
+  <!-- MANIFESTO -->
+  <section class="manifesto">
+    <p class="manifesto-text" id="manifestoFr">
+      <span class="word">L'IA</span> <span class="word">est</span> <span class="word">un</span> <span class="word">outil,</span>
+      <span class="word">pas</span> <span class="word">une</span> <span class="word">menace.</span>
+    </p>
+    <p class="manifesto-text lang-en" id="manifestoEn" hidden>
+      <span class="word">AI</span> <span class="word">is</span> <span class="word">a</span> <span class="word">tool,</span>
+      <span class="word">not</span> <span class="word">a</span> <span class="word">threat.</span>
+    </p>
+    <p class="manifesto-sub reveal">
+      <span class="lang-fr">Je l'utilise pour aller plus vite — jamais pour remplacer le travail bien fait.</span>
+      <span class="lang-en" hidden>I use it to move faster — never to replace work done properly.</span>
+    </p>
+  </section>
 
-    // Nav : fond au scroll
-    const nav = document.getElementById('site-nav');
-    const onScroll = () => nav.classList.toggle('is-scrolled', window.scrollY > 12);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
+  <!-- REALISATIONS -->
+  <section class="realisations" id="realisations">
+    <p class="section-eyebrow reveal">
+      <span class="lang-fr">Réalisations</span><span class="lang-en" hidden>Work</span>
+    </p>
+    <h2 class="section-title reveal">
+      <span class="lang-fr">Du concret, livré à de vraies structures.</span>
+      <span class="lang-en" hidden>Real work, shipped to real businesses.</span>
+    </h2>
 
-    // Nav : menu mobile
-    const toggle = document.getElementById('nav-toggle');
-    const links = document.getElementById('nav-links');
-    toggle.addEventListener('click', () => {
-      const open = links.classList.toggle('is-open');
-      toggle.classList.toggle('is-open', open);
-      toggle.setAttribute('aria-expanded', String(open));
-    });
-    links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-      links.classList.remove('is-open');
-      toggle.classList.remove('is-open');
-      toggle.setAttribute('aria-expanded', 'false');
-    }));
+    <!-- Featured : Serveur maison (projet perso, mis à part) -->
+    <article class="homelab reveal">
+      <div class="homelab-glow" aria-hidden="true"></div>
+      <span class="homelab-badge">
+        <span class="homelab-dot" aria-hidden="true"></span>
+        <span class="lang-fr">En coulisses · Projet perso</span>
+        <span class="lang-en" hidden>Behind the scenes · Personal project</span>
+      </span>
+      <h3>
+        <span class="lang-fr">Un serveur maison, monté de zéro.</span>
+        <span class="lang-en" hidden>A home server, built from scratch.</span>
+      </h3>
+      <p class="homelab-hook">
+        <span class="lang-fr">Pas un tuto suivi à la lettre : une vraie machine auto-hébergée, en production chez moi, avec ses vraies contraintes.</span>
+        <span class="lang-en" hidden>Not a tutorial followed to the letter: a real self-hosted machine, running in production at home, with real-world constraints.</span>
+      </p>
 
-    // Reveal au scroll
-    const revealEls = document.querySelectorAll('.reveal, .reveal-stagger');
-    if ('IntersectionObserver' in window) {
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
-            io.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.14, rootMargin: '0px 0px -8% 0px' });
-      revealEls.forEach(el => io.observe(el));
-    } else {
-      revealEls.forEach(el => el.classList.add('is-visible'));
-    }
-  </script>
+      <p class="homelab-text">
+        <span class="lang-fr">L'objectif : héberger mes propres outils — automatisations, bases de données, veille — sans dépendre d'un cloud tiers. Chaque obstacle est devenu une occasion d'apprendre, épaulé par l'IA quand il fallait comprendre vite et bien.</span>
+        <span class="lang-en" hidden>The goal: host my own tools — automations, databases, monitoring — without depending on a third-party cloud. Every obstacle became a chance to learn, with AI alongside when I needed to understand fast and properly.</span>
+      </p>
 
+      <ul class="homelab-constraints">
+        <li>
+          <span class="hc-label">Starlink</span>
+          <span class="hc-desc"><span class="lang-fr">Connexion satellite, sans IP fixe : accès distant repensé pour rester joignable malgré la latence.</span><span class="lang-en" hidden>Satellite link, no fixed IP: remote access rethought to stay reachable despite latency.</span></span>
+        </li>
+        <li>
+          <span class="hc-label"><span class="lang-fr">Sécurité</span><span class="lang-en" hidden>Security</span></span>
+          <span class="hc-desc"><span class="lang-fr">Accès verrouillé, services isolés, secrets tenus à l'écart — exposer une machine chez soi, ça ne s'improvise pas.</span><span class="lang-en" hidden>Locked-down access, isolated services, secrets kept out of reach — exposing a machine at home is not improvised.</span></span>
+        </li>
+        <li>
+          <span class="hc-label"><span class="lang-fr">RAM &amp; swap</span><span class="lang-en" hidden>RAM &amp; swap</span></span>
+          <span class="hc-desc"><span class="lang-fr">Mémoire étendue via un fichier d'échange pour encaisser les pics sans planter, sur un matériel modeste.</span><span class="lang-en" hidden>Memory extended with a swap file to absorb load spikes without crashing, on modest hardware.</span></span>
+        </li>
+      </ul>
+
+      <p class="homelab-note">
+        <span class="lang-fr">La preuve concrète que <strong>l'IA est un outil, pas une menace</strong> : elle accélère la montée en compétence — elle ne remplace pas la main qui construit.</span>
+        <span class="lang-en" hidden>Living proof that <strong>AI is a tool, not a threat</strong>: it speeds up the learning curve — it doesn't replace the hand that builds.</span>
+      </p>
+    </article>
+
+    <!-- Project 1 : Louvat Box -->
+    <article class="project reveal">
+      <div class="project-media has-shot">
+        <img src="https://aubedigital.fr/images/proj-louvatbox.jpg" alt="Capture du site Louvat Box" loading="lazy">
+      </div>
+      <div class="project-body">
+        <span class="project-tag"><span class="lang-fr">Plateforme e-commerce</span><span class="lang-en" hidden>E-commerce platform</span></span>
+        <h3><span class="lang-fr">Louvat Box</span><span class="lang-en" hidden>Louvat Box</span></h3>
+        <p class="project-hook">
+          <span class="lang-fr">Une biscuiterie familiale de 1954 qui vend maintenant en abonnement.</span>
+          <span class="lang-en" hidden>A family biscuit maker since 1954, now selling by subscription.</span>
+        </p>
+        <p class="project-desc">
+          <span class="lang-fr">Tunnel d'abonnement complet (formule, fréquence, paiement SEPA), codes Comité d'Entreprise avec remises automatiques, espace client et back-office pour la gérante. Le projet le plus complet livré à ce jour.</span>
+          <span class="lang-en" hidden>Full subscription flow (plan, frequency, SEPA payment), works-council discount codes, customer account and a back-office for the owner. The most complete project delivered so far.</span>
+        </p>
+        <ul class="project-stack">
+          <li>Next.js</li><li>React</li><li>TypeScript</li><li>Supabase</li><li>Stripe</li>
+        </ul>
+        <a href="https://louvat-box.vercel.app" class="project-link" target="_blank" rel="noopener">
+          <span class="lang-fr">Voir le site</span><span class="lang-en" hidden>View site</span> →
+        </a>
+      </div>
+    </article>
+
+    <!-- Project 3 : Planning Louvat -->
+    <article class="project reveal">
+      <div class="project-media has-shot">
+        <img src="https://aubedigital.fr/images/proj-planning.jpg" alt="Écran de connexion sécurisée du Planning Louvat" loading="lazy">
+      </div>
+      <div class="project-body">
+        <span class="project-tag"><span class="lang-fr">Outil interne — Ressources humaines</span><span class="lang-en" hidden>Internal tool — Workforce</span></span>
+        <h3><span class="lang-fr">Planning Louvat</span><span class="lang-en" hidden>Planning Louvat</span></h3>
+        <p class="project-hook">
+          <span class="lang-fr">Fini les plannings sur papier pour les vendeuses partenaires.</span>
+          <span class="lang-en" hidden>No more paper schedules for the partner sales team.</span>
+        </p>
+        <p class="project-desc">
+          <span class="lang-fr">Application professionnelle et responsive de planification et de suivi des prestations, pensée pour être utilisée sur le terrain — sur téléphone comme sur ordinateur.</span>
+          <span class="lang-en" hidden>Professional, responsive app for scheduling and tracking work assignments, built to be used on the move — on phone as well as desktop.</span>
+        </p>
+        <ul class="project-stack">
+          <li>TypeScript</li><li>Responsive</li>
+        </ul>
+      </div>
+    </article>
+
+    <!-- Project 4 : Le Nez d'Or -->
+    <article class="project reveal reverse">
+      <div class="project-media has-shot">
+        <img src="https://aubedigital.fr/images/proj-nezdor.jpg" alt="Capture du site Le Nez d'Or" loading="lazy">
+      </div>
+      <div class="project-body">
+        <span class="project-tag"><span class="lang-fr">Site événementiel</span><span class="lang-en" hidden>Event website</span></span>
+        <h3><span class="lang-fr">Le Nez d'Or</span><span class="lang-en" hidden>Le Nez d'Or</span></h3>
+        <p class="project-hook">
+          <span class="lang-fr">Une cérémonie de remise de prix, mise en scène en ligne.</span>
+          <span class="lang-en" hidden>An awards ceremony, staged online.</span>
+        </p>
+        <p class="project-desc">
+          <span class="lang-fr">Identité forte, narration soignée : une expérience qui donne envie de suivre l'événement jusqu'au bout.</span>
+          <span class="lang-en" hidden>Strong identity, careful storytelling: an experience that makes people want to follow the event to the end.</span>
+        </p>
+        <ul class="project-stack">
+          <li>HTML5 / CSS3</li><li>JS vanilla</li>
+        </ul>
+        <a href="https://github.com/bast5577438/LeNezDor" class="project-link" target="_blank" rel="noopener">
+          <span class="lang-fr">Code source</span><span class="lang-en" hidden>Source code</span> →
+        </a>
+      </div>
+    </article>
+
+    <!-- Diversity grid : secondary projects -->
+    <div class="project-grid reveal">
+
+      <div class="project-card">
+        <span class="project-tag small"><span class="lang-fr">Site vitrine — Restauration</span><span class="lang-en" hidden>Showcase site — Restaurant</span></span>
+        <h4>Mamie Paillette</h4>
+        <p><span class="lang-fr">Site vitrine d'un restaurant familial à Jaujac (Ardèche) : un seul fichier HTML, zéro dépendance, chargement quasi instantané.</span><span class="lang-en" hidden>Showcase site for a family restaurant in Jaujac, Ardèche: a single HTML file, zero dependency, near-instant load.</span></p>
+        <a href="https://github.com/bast5577438/mamiepailette" class="project-link" target="_blank" rel="noopener"><span class="lang-fr">Code source</span><span class="lang-en" hidden>Source code</span> →</a>
+      </div>
+
+      <div class="project-card">
+        <span class="project-tag small"><span class="lang-fr">Outil interne</span><span class="lang-en" hidden>Internal tool</span></span>
+        <h4>ProdLouvat</h4>
+        <p><span class="lang-fr">Suivi de production en temps réel, synchronisé sur tous les postes — fonctionne même hors ligne.</span><span class="lang-en" hidden>Real-time production tracking, synced across every workstation — keeps working offline.</span></p>
+      </div>
+
+      <div class="project-card">
+        <span class="project-tag small"><span class="lang-fr">App collaborative</span><span class="lang-en" hidden>Collaborative app</span></span>
+        <h4>WE Maggie</h4>
+        <p><span class="lang-fr">Organisation d'un week-end à plusieurs : programme, budget, checklist — synchronisé en direct entre les téléphones.</span><span class="lang-en" hidden>Organizing a group weekend: schedule, budget, checklist — live-synced across everyone's phone.</span></p>
+      </div>
+
+      <div class="project-card">
+        <span class="project-tag small"><span class="lang-fr">Produit maison</span><span class="lang-en" hidden>In-house product</span></span>
+        <h4><span class="lang-fr">Aube Digital — Temps</span><span class="lang-en" hidden>Aube Digital — Time</span></h4>
+        <p><span class="lang-fr">Gestionnaire de temps personnel pour freelances, construit pour mon propre usage entre prospection, clients et formation.</span><span class="lang-en" hidden>A personal time manager for freelancers, built for my own juggling of prospecting, clients and training.</span></p>
+      </div>
+
+      <div class="project-card">
+        <span class="project-tag small"><span class="lang-fr">En cours</span><span class="lang-en" hidden>In progress</span></span>
+        <h4>Écrin</h4>
+        <p><span class="lang-fr">Plateforme de location d'articles haut de gamme, avec formules multi-mois pensées pour l'offrir en cadeau.</span><span class="lang-en" hidden>A rental platform for premium items, with multi-month plans designed to be given as a gift.</span></p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services" id="services">
+    <p class="section-eyebrow reveal">
+      <span class="lang-fr">Ce que je peux faire pour vous</span><span class="lang-en" hidden>What I can do for you</span>
+    </p>
+    <h2 class="section-title reveal">
+      <span class="lang-fr">Quatre façons de faire avancer votre activité.</span>
+      <span class="lang-en" hidden>Four ways to move your business forward.</span>
+    </h2>
+    <div class="services-list">
+      <div class="service reveal">
+        <span class="service-num">01</span>
+        <h3><span class="lang-fr">Sites vitrines</span><span class="lang-en" hidden>Showcase websites</span></h3>
+        <p><span class="lang-fr">Présentez votre activité avec un site rapide, soigné sur mobile, et que vous pouvez transmettre sans souci.</span><span class="lang-en" hidden>Present your business with a fast site, polished on mobile, that you can hand off without worry.</span></p>
+      </div>
+      <div class="service reveal">
+        <span class="service-num">02</span>
+        <h3><span class="lang-fr">Boutiques &amp; abonnements</span><span class="lang-en" hidden>Stores &amp; subscriptions</span></h3>
+        <p><span class="lang-fr">Vendez en ligne : panier, formules d'abonnement, paiement. Une base technique pensée pour grandir avec vous.</span><span class="lang-en" hidden>Sell online: cart, subscription plans, payment. A technical foundation built to grow with your business.</span></p>
+      </div>
+      <div class="service reveal">
+        <span class="service-num">03</span>
+        <h3><span class="lang-fr">Outils internes sur-mesure</span><span class="lang-en" hidden>Custom internal tools</span></h3>
+        <p><span class="lang-fr">Suivi de production, planning, tableaux de bord — accessibles depuis n'importe quel poste, en temps réel.</span><span class="lang-en" hidden>Production tracking, scheduling, dashboards — accessible from any device, in real time.</span></p>
+      </div>
+      <div class="service reveal">
+        <span class="service-num">04</span>
+        <h3><span class="lang-fr">Apps collaboratives</span><span class="lang-en" hidden>Collaborative apps</span></h3>
+        <p><span class="lang-fr">Organisation d'événements, coordination d'équipe : tout le monde voit la même chose, en direct.</span><span class="lang-en" hidden>Event organizing, team coordination: everyone sees the same thing, live.</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- APROPOS -->
+  <section class="apropos" id="apropos">
+    <div class="apropos-inner reveal">
+      <div class="apropos-photo">
+        <img src="https://aubedigital.fr/images/bastien.jpg" alt="Bastien Vannière — aube digital" loading="lazy">
+      </div>
+      <div class="apropos-body">
+      <p class="section-eyebrow"><span class="lang-fr">À propos</span><span class="lang-en" hidden>About</span></p>
+      <h2 class="section-title">
+        <span class="lang-fr">Autodidacte, et ça se voit dans le code.</span>
+        <span class="lang-en" hidden>Self-taught, and it shows in the code.</span>
+      </h2>
+      <p class="apropos-text">
+        <span class="lang-fr">J'ai appris à coder en construisant de vrais projets pour de vraies structures — pas en empilant des tutoriels. Ma façon de travailler : comprendre le vrai besoin, proposer la solution la plus simple qui tient la route, et livrer du code que vous pourrez faire évoluer — sans dépendre de moi à vie.</span>
+        <span class="lang-en" hidden>I learned to code by building real projects for real businesses — not by stacking tutorials. My way of working: understand the actual need, propose the simplest solution that holds up, and hand over code you can build on — without depending on me forever.</span>
+      </p>
+      <p class="apropos-text">
+        <span class="lang-fr">Basé entre Grenoble et l'Ardèche, disponible pour discuter, tester, ajuster — jusqu'à ce que ça vous convienne vraiment.</span>
+        <span class="lang-en" hidden>Based between Grenoble and the Ardèche, available to talk, test and adjust — until it truly fits.</span>
+      </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <p class="section-eyebrow reveal"><span class="lang-fr">Contact</span><span class="lang-en" hidden>Contact</span></p>
+    <h2 class="contact-title reveal">
+      <span class="lang-fr">Un projet en tête ?<br>Discutons-en.</span>
+      <span class="lang-en" hidden>Got a project in mind?<br>Let's talk.</span>
+    </h2>
+    <p class="contact-sub reveal">
+      <span class="lang-fr">Décrivez-moi votre projet — même flou, même « c'est juste une idée pour l'instant ». Je réponds rapidement, sans jargon, et sans engagement.</span>
+      <span class="lang-en" hidden>Tell me about your project — even fuzzy, even "it's just an idea for now". I answer quickly, no jargon, no commitment.</span>
+    </p>
+    <div class="contact-actions reveal">
+      <a href="mailto:contact@aubedigital.fr" class="btn btn-solid">
+        <span class="lang-fr">M'écrire</span><span class="lang-en" hidden>Email me</span> →
+      </a>
+      <a href="https://www.linkedin.com/in/bastien-vanniere-636315175/" class="btn btn-ghost" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <a href="#top" class="nav-logo">aube digital<span class="dot">.</span></a>
+  <div class="footer-links">
+    <a href="https://github.com/bast5577438" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://www.instagram.com/aube_digital/" target="_blank" rel="noopener">Instagram</a>
+    <a href="https://www.linkedin.com/in/bastien-vanniere-636315175/" target="_blank" rel="noopener">LinkedIn</a>
+  </div>
+  <p class="footer-copy">© aube digital — Bastien Vannière</p>
+</footer>
+
+<script src="script.js"></script>
 </body>
 </html>
